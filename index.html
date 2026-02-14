@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ThermaLØGIC</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Therma<span>LØGIC</span></h1>
+        <p class="subtitle">Thermal & Performance Diagnostic Utility</p>
+
+        <div class="system-status">
+        <span class="dot"></span>
+        SYSTEM READY
+    </div>
+
+        <form id="diagnosticForm">
+
+            <div>
+            <label>GPU Usage (%)</label>
+            <input type="number" id="gpuUsage" required>
+            </div>
+
+            <div>
+            <label>CPU Usage (%)</label>
+            <input type="number" id="cpuUsage" required>
+            </div>
+
+            <div>
+            <label>GPU VRAM (GB)</label>
+            <input type="number" id="vram" required>
+            </div>
+
+            <div>
+            <label>System RAM (GB)</label>
+            <input type="number" id="ram" required>
+            </div>
+
+            <div class="full-width">
+            <label>Resolution</label>
+            <select id="resolution">
+                <option value="1080">1080p</option>
+                <option value="1440">1440p</option>
+                <option value="4k">4K</option>
+            </select>
+            </div>
+
+            <div>
+            <label>Average FPS</label>
+            <input type="number" id="fps" required>
+            </div>
+
+            <button type="submit">Analyze</button>
+
+        </form>
+
+        <div id="results"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
