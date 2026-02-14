@@ -1,51 +1,45 @@
-/* ==========================
-   CSS Variables / Theme
-========================== */
+/* --------------------------
+   Base / Container
+--------------------------- */
 :root {
-    --bg: #0e1015;          /* page background */
-    --panel: #151922;       /* container background */
-    --card: #1c212b;        /* result card background */
-    --accent: #ff4d2d;      /* primary accent for highlights / glow */
-    --accent-soft: rgba(255,77,45,0.15); /* subtle glow for focus effects */
-    --text: #e6eaf0;        /* main text color */
-    --subtext: #8b93a6;     /* secondary / label text */
-    --border: #2a2f3a;      /* borders for cards, panels */
+    --bg: #0a0a0a;
+    --card: #111111;
+    --accent: #ff0055;
+    --border: #222222;
+    --text: #e0e0e0;
+    --medium: #ff7700;
+    --high: #ff0000;
+    --low: #00ff88;
 }
 
-/* ==========================
-   Global Styles
-========================== */
 * {
     box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: "Segoe UI", Roboto, sans-serif;
     background: var(--bg);
-    margin: 0;
-    padding: 60px 20px;
     color: var(--text);
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
 }
 
-/* ==========================
-   Container
-========================== */
 .container {
-    max-width: 650px;
-    margin: auto;
-    background: var(--panel);
-    padding: 45px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 480px;
 }
 
-/* ==========================
-   Header
-========================== */
+/* --------------------------
+   Headings
+--------------------------- */
 h1 {
-    margin: 0;
-    font-size: 30px;
-    letter-spacing: 1px;
+    font-size: 2.4rem;
+    text-align: center;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
 }
 
 h1 span {
@@ -53,203 +47,94 @@ h1 span {
 }
 
 .subtitle {
-    margin: 10px 0 20px 0;
-    color: var(--subtext);
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #888;
 }
 
-/* ==========================
+/* --------------------------
    System Status
-========================== */
+--------------------------- */
 .system-status {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
-    letter-spacing: 1px;
-    margin-bottom: 30px;
-    color: var(--subtext);
+    font-weight: bold;
+    margin-bottom: 25px;
 }
 
-.dot {
-    width: 8px;
-    height: 8px;
-    background: var(--accent);
+.system-status .dot {
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    animation: statusPulse 2s infinite ease-in-out;
+    background: var(--accent);
+    animation: pulse 1.5s infinite;
 }
 
-@keyframes statusPulse {
-    0%, 100% { box-shadow: 0 0 8px var(--accent); }
-    50% { box-shadow: 0 0 14px var(--accent); }
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.6; }
 }
 
-/* ==========================
-   Form / Inputs
-========================== */
-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px;
-}
-
-.full-width {
-    grid-column: span 2;
+/* --------------------------
+   Form
+--------------------------- */
+form div {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
 }
 
 label {
-    font-size: 12px;
-    color: var(--subtext);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
 }
 
-input, select {
-    width: 100%;
-    padding: 11px;
-    margin-top: 6px;
+input, select, button {
+    padding: 10px 12px;
     border-radius: 8px;
     border: 1px solid var(--border);
     background: var(--card);
     color: var(--text);
-    font-size: 14px;
-    transition: border 0.2s ease, box-shadow 0.2s ease;
+    font-size: 1rem;
 }
 
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px var(--accent-soft);
+input::placeholder {
+    color: #666;
 }
 
-/* ==========================
-   Button
-========================== */
-button {
-    grid-column: span 2;
-    padding: 14px;
+.full-width button {
+    width: 100%;
     background: var(--accent);
     color: #000;
-    border: none;
-    border-radius: 8px;
-    font-weight: 700;
+    font-weight: bold;
     cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: transform 0.1s ease, opacity 0.2s ease;
+    transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-button:hover {
-    opacity: 0.9;
+.full-width button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
 }
 
-button:active {
-    transform: scale(0.98);
-}
-
-/* ==========================
-   Results Section
-========================== */
-#results {
-    margin-top: 45px;
-}
-
-/* Result Cards */
+/* --------------------------
+   Results Cards
+--------------------------- */
 .result-card {
     position: relative;
     overflow: hidden;
     background: var(--card);
-    padding: 22px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    border: 1px solid var(--border);
-    color: var(--text);
-}
-
-/* Result Card Heading */
-.result-card h3 {
-    margin: 0 0 8px 0;
-    font-size: 13px;
-    color: var(--subtext);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 4px;
-}
-
-/* Result Card Icon */
-.result-card h3 .icon {
-    margin-right: 6px;
-    font-size: 14px;
-    vertical-align: middle;
-}
-
-/* Result Label */
-.result-label {
-    font-weight: 700;
-    font-size: 17px;
-    color: var(--text);
-}
-
-/* ==========================
-   Severity Classes + Glow Pulse
-========================== */
-@keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(255, 77, 45, 0.4); }
-    50% { box-shadow: 0 0 18px rgba(255, 77, 45, 0.6); }
-}
-
-.result-card.high {
-    border-color: #ff4d2d;
-    animation: glowPulse 1.5s infinite ease-in-out;
-}
-
-.result-card.medium {
-    border-color: #ffc107;
-    animation: glowPulse 2s infinite ease-in-out;
-    box-shadow: 0 0 12px rgba(255, 193, 7, 0.3);
-}
-
-.result-card.low {
-    border-color: var(--accent);
-    box-shadow: 0 0 10px rgba(255, 77, 45, 0.15);
-}
-
-/* ==========================
-   Scan Line Animation
-========================== */
-.result-card::after {
-    content: "";
-    position: absolute;
-    top: -25%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(255,77,45,0.3), transparent);
-    transform: translateY(0);
-    animation: scanLine 3s linear infinite;
-}
-
-.result-card.high::after { background: linear-gradient(90deg, transparent, rgba(255,77,45,0.4), transparent); }
-.result-card.medium::after { background: linear-gradient(90deg, transparent, rgba(255,193,7,0.3), transparent); }
-.result-card.low::after { background: linear-gradient(90deg, transparent, rgba(0,240,255,0.15), transparent); }
-
-@keyframes scanLine {
-    0% { transform: translateY(-25%); }
-    100% { transform: translateY(125%); }
-}
-
-.result-card {
-    position: relative;
-    overflow: hidden;
-    background: var(--card);
-    padding: 30px 22px 22px 22px; /* extra top padding for badge */
+    padding: 30px 22px 22px 22px;
     border-radius: 12px;
     margin-bottom: 18px;
     border: 1px solid var(--border);
     color: var(--text);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-2px);
 }
 
 .result-card .badge {
@@ -266,16 +151,18 @@ button:active {
     letter-spacing: 0.5px;
 }
 
-.result-card + .result-card {
-    border-top: 1px solid var(--border);
-    margin-top: -1px; /* avoids double spacing with margin-bottom */
+.result-card.low { border-left: 4px solid var(--low); }
+.result-card.medium { border-left: 4px solid var(--medium); }
+.result-card.high { border-left: 4px solid var(--high); }
+
+.result-card h3 {
+    margin-bottom: 8px;
 }
 
-.result-card {
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
-    transition: transform 0.2s ease;
+.result-card .icon {
+    margin-right: 6px;
 }
 
-.result-card:hover {
-    transform: translateY(-2px);
+.result-card p.result-label {
+    font-weight: bold;
 }

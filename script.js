@@ -1,8 +1,7 @@
 // ==========================
-// TheraLØGIC Diagnostics JS
+// ThermaLØGIC Diagnostics JS
 // ==========================
 
-// Grab elements
 const runBtn = document.getElementById("runDiagnostics");
 const resultsContainer = document.getElementById("results");
 
@@ -12,16 +11,14 @@ runBtn.addEventListener("click", () => {
     const gpuUsage = parseFloat(document.getElementById("gpuUsage").value) || 0;
     const ramUsed = parseFloat(document.getElementById("ramUsed").value) || 0;
     const vramUsed = parseFloat(document.getElementById("vramUsed").value) || 0;
+    const resolution = document.getElementById("resolution").value;
 
     // Clear previous results
     resultsContainer.innerHTML = "";
 
     // ==========================
-    // 1) Determine primary bottleneck
-    // ==========================
-    let primary = "";
-    let primaryClass = "low";
-
+    // Primary Bottleneck
+    let primary = "", primaryClass = "low";
     if (gpuUsage > 80 || cpuUsage > 85) {
         primary = "High - Performance may be limited!";
         primaryClass = "high";
@@ -34,11 +31,8 @@ runBtn.addEventListener("click", () => {
     }
 
     // ==========================
-    // 2) Determine secondary risk
-    // ==========================
-    let secondary = "";
-    let secondaryClass = "low";
-
+    // RAM Risk
+    let secondary = "", secondaryClass = "low";
     if (ramUsed < 8) {
         secondary = "High - Insufficient RAM";
         secondaryClass = "high";
@@ -51,25 +45,26 @@ runBtn.addEventListener("click", () => {
     }
 
     // ==========================
-    // 3) VRAM / Memory risk
-    // ==========================
-    let memoryRisk = "";
-    let memoryClass = "low";
+    // VRAM / Resolution Risk
+    let memoryRisk = "", memoryClass = "low";
+    let vramThreshold = 2;
+    if (resolution === "1080p") vramThreshold = 2;
+    else if (resolution === "1440p") vramThreshold = 4;
+    else if (resolution === "4k") vramThreshold = 6;
 
-    if (vramUsed < 2) {
-        memoryRisk = "High - VRAM may limit graphics";
+    if (vramUsed < vramThreshold) {
+        memoryRisk = `High - VRAM may limit ${resolution} graphics`;
         memoryClass = "high";
-    } else if (vramUsed < 4) {
-        memoryRisk = "Medium - Monitor resolution may be affected";
+    } else if (vramUsed < vramThreshold + 2) {
+        memoryRisk = `Medium - ${resolution} graphics could be affected`;
         memoryClass = "medium";
     } else {
-        memoryRisk = "Low - VRAM sufficient";
+        memoryRisk = `Low - VRAM sufficient for ${resolution}`;
         memoryClass = "low";
     }
 
     // ==========================
-    // 4) Generate Result Cards
-    // ==========================
+    // Generate Result Cards
     resultsContainer.innerHTML = `
     <div class="result-card ${primaryClass}">
         <span class="badge">GPU/CPU</span>
