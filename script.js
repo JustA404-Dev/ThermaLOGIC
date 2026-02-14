@@ -1,71 +1,92 @@
-// Listen to form submission
-document.getElementById("diagnosticForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+// ==========================
+// TheraLØGIC Diagnostics JS
+// ==========================
 
-    // Grab input values
-    const gpuUsage = parseInt(document.getElementById("gpuUsage").value);
-    const cpuUsage = parseInt(document.getElementById("cpuUsage").value);
-    const vram = parseInt(document.getElementById("vram").value);
-    const ram = parseInt(document.getElementById("ram").value);
-    const resolution = document.getElementById("resolution").value;
-    const fps = parseInt(document.getElementById("fps").value);
+// Grab elements
+const runBtn = document.getElementById("runDiagnostics");
+const resultsContainer = document.getElementById("results");
 
-    // Determine diagnostics
-    let primary = "Balanced Load";
-    let secondary = "None";
-    let memoryRisk = "Low";
+runBtn.addEventListener("click", () => {
+    // Read input values
+    const cpuUsage = parseFloat(document.getElementById("cpuUsage").value) || 0;
+    const gpuUsage = parseFloat(document.getElementById("gpuUsage").value) || 0;
+    const ramUsed = parseFloat(document.getElementById("ramUsed").value) || 0;
+    const vramUsed = parseFloat(document.getElementById("vramUsed").value) || 0;
 
-    if (gpuUsage > 95 && cpuUsage < 85) {
-        primary = "GPU Bottleneck";
-    } else if (cpuUsage > 90 && gpuUsage < 80) {
-        primary = "CPU Bottleneck";
+    // Clear previous results
+    resultsContainer.innerHTML = "";
+
+    // ==========================
+    // 1) Determine primary bottleneck
+    // ==========================
+    let primary = "";
+    let primaryClass = "low";
+
+    if (gpuUsage > 80 || cpuUsage > 85) {
+        primary = "High - Performance may be limited!";
+        primaryClass = "high";
+    } else if (gpuUsage > 60 || cpuUsage > 70) {
+        primary = "Medium - Some impact possible";
+        primaryClass = "medium";
+    } else {
+        primary = "Low - System running smoothly";
+        primaryClass = "low";
     }
 
-    if (vram <= 6 && (resolution === "1440" || resolution === "4k")) {
-        memoryRisk = "VRAM Limitation Risk";
+    // ==========================
+    // 2) Determine secondary risk
+    // ==========================
+    let secondary = "";
+    let secondaryClass = "low";
+
+    if (ramUsed < 8) {
+        secondary = "High - Insufficient RAM";
+        secondaryClass = "high";
+    } else if (ramUsed < 16) {
+        secondary = "Medium - Could affect multitasking";
+        secondaryClass = "medium";
+    } else {
+        secondary = "Low - RAM capacity adequate";
+        secondaryClass = "low";
     }
 
-    if (ram <= 8) {
-        secondary = "System RAM may be limiting performance";
+    // ==========================
+    // 3) VRAM / Memory risk
+    // ==========================
+    let memoryRisk = "";
+    let memoryClass = "low";
+
+    if (vramUsed < 2) {
+        memoryRisk = "High - VRAM may limit graphics";
+        memoryClass = "high";
+    } else if (vramUsed < 4) {
+        memoryRisk = "Medium - Monitor resolution may be affected";
+        memoryClass = "medium";
+    } else {
+        memoryRisk = "Low - VRAM sufficient";
+        memoryClass = "low";
     }
 
-    // Helper function for result card severity
-    function getSeverityClass(value, type) {
-        value = value.toLowerCase();
-        if (type === "primary") {
-            if (value.includes("gpu") || value.includes("cpu")) return "high";
-            else return "low";
-        }
-        if (type === "secondary") {
-            if (value.includes("ram")) return "medium";
-            else return "low";
-        }
-        if (type === "memory") {
-            if (value.includes("vram") || value.includes("limitation")) return "high";
-            else return "low";
-        }
-        return "low";
-    }
+    // ==========================
+    // 4) Generate Result Cards
+    // ==========================
+    resultsContainer.innerHTML = `
+    <div class="result-card ${primaryClass}">
+        <span class="badge">GPU/CPU</span>
+        <h3><span class="icon">🖥️</span> Primary Bottleneck</h3>
+        <p class="result-label">${primary}</p>
+    </div>
 
-    // Assign classes in one cohesive line
-    const primaryClass = getSeverityClass(primary, "primary"), secondaryClass = getSeverityClass(secondary, "secondary"), memoryClass = getSeverityClass(memoryRisk, "memory");
+    <div class="result-card ${secondaryClass}">
+        <span class="badge">RAM</span>
+        <h3><span class="icon">💾</span> Secondary Risk</h3>
+        <p class="result-label">${secondary}</p>
+    </div>
 
-    // Display results with dynamic colors
-    document.getElementById("results").innerHTML = `
-<div class="result-card ${primaryClass}">
-    <span class="badge">GPU/CPU</span>
-    <h3><span class="icon">🖥️</span> Primary Bottleneck</h3>
-    <p class="result-label">${primary}</p>
-</div>
-<div class="result-card ${secondaryClass}">
-    <span class="badge">RAM</span>
-    <h3><span class="icon">💾</span> Secondary Risk</h3>
-    <p class="result-label">${secondary}</p>
-</div>
-<div class="result-card ${memoryClass}">
-    <span class="badge">VRAM</span>
-    <h3><span class="icon">🎛️</span> Memory Risk</h3>
-    <p class="result-label">${memoryRisk}</p>
-</div>`;
-
+    <div class="result-card ${memoryClass}">
+        <span class="badge">VRAM</span>
+        <h3><span class="icon">🎛️</span> Memory Risk</h3>
+        <p class="result-label">${memoryRisk}</p>
+    </div>
+    `;
 });
