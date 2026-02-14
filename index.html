@@ -2,63 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ThermaLØGIC</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Link to your CSS -->
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-
     <div class="container">
-        <h1>Therma<span>LØGIC</span></h1>
-        <p class="subtitle">Thermal & Performance Diagnostic Utility</p>
+        <h1>ThermaL<span>Ø</span>GIC</h1>
+        <p class="subtitle">System Diagnostics & Performance Checker</p>
 
+        <!-- System Status -->
         <div class="system-status">
-        <span class="dot"></span>
-        SYSTEM READY
-    </div>
+            <div class="dot"></div>
+            <span>SYSTEM READY</span>
+        </div>
 
+        <!-- User Input Form -->
         <form id="diagnosticForm">
-
             <div>
-            <label>GPU Usage (%)</label>
-            <input type="number" id="gpuUsage" required>
+                <label for="cpuUsage">CPU Usage (%)</label>
+                <input type="number" id="cpuUsage" min="0" max="100" value="30">
+            </div>
+            <div>
+                <label for="gpuUsage">GPU Usage (%)</label>
+                <input type="number" id="gpuUsage" min="0" max="100" value="40">
+            </div>
+            <div>
+                <label for="ramUsed">System RAM (GB)</label>
+                <input type="number" id="ramUsed" min="0" value="8">
+            </div>
+            <div>
+                <label for="vramUsed">VRAM (GB)</label>
+                <input type="number" id="vramUsed" min="0" value="4">
             </div>
 
-            <div>
-            <label>CPU Usage (%)</label>
-            <input type="number" id="cpuUsage" required>
-            </div>
-
-            <div>
-            <label>GPU VRAM (GB)</label>
-            <input type="number" id="vram" required>
-            </div>
-
-            <div>
-            <label>System RAM (GB)</label>
-            <input type="number" id="ram" required>
-            </div>
-
+            <!-- Full-width button -->
             <div class="full-width">
-            <label>Resolution</label>
-            <select id="resolution">
-                <option value="1080">1080p</option>
-                <option value="1440">1440p</option>
-                <option value="4k">4K</option>
-            </select>
+                <button type="button" id="runDiagnostics">Run Diagnostics</button>
             </div>
-
-            <div>
-            <label>Average FPS</label>
-            <input type="number" id="fps" required>
-            </div>
-
-            <button type="submit">Analyze</button>
-
         </form>
 
+        <!-- Results Section -->
         <div id="results"></div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Link to your JS -->
+    <script src="./script.js"></script>
+
+    <!-- Optional: small JS snippet for mobile input focus scrolling fix -->
+    <script>
+        // Fix for mobile devices: scroll inputs into view when focused
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                setTimeout(() => input.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+            });
+        });
+    </script>
 </body>
 </html>
